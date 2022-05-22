@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class OrderController {
 		if(user == null) {
 			return ResponseEntity.notFound().build();
 		}
-		UserOrder order = UserOrder.createFromCart(user.getCart());
+		UserOrder order = createFromCartWrapper(user.getCart());
 		orderRepository.save(order);
 		return ResponseEntity.ok(order);
 	}
@@ -48,4 +49,7 @@ public class OrderController {
 		}
 		return ResponseEntity.ok(orderRepository.findByUser(user));
 	}
+    public UserOrder createFromCartWrapper(Cart cart) {
+        return UserOrder.createFromCart(cart);
+    }
 }
